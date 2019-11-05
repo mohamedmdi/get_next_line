@@ -12,47 +12,70 @@
 
 #include "get_next_line.h"
 
+char *checker(char *remainder, char **line)
+{
+    char *ptr;
+    ptr = NULL;
+    size_t l;
+
+    if (remainder)
+        if ((ptr = ft_strchr(remainder, '\n')))        
+        {
+            *ptr = '\0';
+            *line = ft_strdup(remainder);
+            ptr++;
+            l = strlen(ptr);
+            ft_strlcpy(remainder, ptr, l + 1);
+        }
+        else
+        {
+            *line = ft_strdup(remainder);
+            free(remainder);
+            remainder = NULL;
+        }
+    else
+        *line = ft_strdup("");
+    return (ptr);
+}
+
 int get_next_line(int fd, char **line)
 {
-    char buff[BUFFER_SIZE + 1];
-    int bwr;
-    char *ptr;
-    int bol;
     static char *rem;
- 
+    char        *buff;
+    int         bwr;
+    char        *ptr;
     
-    bol = 1;
-    *line = ft_strdup("");
-    if(rem)
-        *line = ft_strjoin(*line, rem);
-    while (bol && (bwr = read(fd, buff, BUFFER_SIZE)))
+ 
+
+    buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    ptr = checker(rem, line);
+    while (!ptr && (bwr = read(fd, buff, BUFFER_SIZE)))
     {
         buff[bwr] = '\0';
-        if ((ptr = ft_strchr(buff, '\n')))
+        if ((ptr = ft_strchr(buff, '\n')))  
         {
+            *ptr = '\0';
             rem = ft_strdup(ptr + 1);
-            *ptr = '\0'; 
-            bol = 0;
         }
         *line = ft_strjoin(*line ,buff);
     }
-        return(0);
+        free(buff);
+        buff = NULL;
+        if (bwr || ft_strlen(rem))
+            return(1);
+        else
+            return(0);
+        //return(bwr || ft_strlen(rem)) ? 1 : 0;
 }
 
 int main()
 {
     char *line; 
     int fd;
-    int bytes;
     
-    bytes = 0;
     fd = open("text.txt", O_RDONLY);
-    int ret = 1;
-        //while (ret != 0)
-        //{
-            /*ret =*/ get_next_line(fd, &line);
-            printf("%s\n", line);  
-        //}
-        get_next_line(fd, &line);
-        printf("%s", line);
+    int ret = 0;
+        while (get_next_line(fd, &line))
+            printf("%s\n", line);
+            ret++;
 }
