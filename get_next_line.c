@@ -33,16 +33,16 @@ int		checker(char **remainder, char **line, char* buff)
 		{
 			*ptr = '\0';
 			ptr++;
-			tmp = *line;
+			tmp = *remainder;
 			*line = ft_strdup(*remainder);
-			//ft_strdel(&tmp);
 			*remainder = ft_strdup(ptr);
+			ft_strdel(&tmp);
 			ft_strdel(&buff);
 			return (1);
 		}
 		else
 		{	
-			tmp = *line;
+			//tmp = *line;
 			*line = ft_strdup(*remainder);
 			//ft_strdel(&tmp);
 			ft_strdel(remainder);
@@ -73,7 +73,9 @@ int		get_next_line(int fd, char **line)
 		{
 			*ptr = '\0';
 			rem = ft_strdup(ptr + 1);
+			tmp = *line;
 			*line = ft_strjoin(*line, buff);
+			ft_strdel(&tmp);
 			ft_strdel(&buff);
 			return(1);
 		}
@@ -84,18 +86,18 @@ int		get_next_line(int fd, char **line)
 	ft_strdel(&buff);
 	return(0);
 }
-int main()
-{
-    char *line; 
-    int fd;
+// int main()
+// {
+//     char *line; 
+//     int fd;
     
-    fd = open("64bit_paragraph.txt", O_RDONLY);
-	int g;
-	g = 1;
-	while (g)
-    {
-		g = get_next_line(fd, &line);
-		printf("%s--%d\n", line, g);
-		free(line);
-	}
- }
+//     fd = open("64bit_paragraph.txt", O_RDONLY);
+// 	int g;
+// 	g = 1;
+// 	while (g)
+//     {
+// 		g = get_next_line(fd, &line);
+// 		printf("%s--%d\n", line, g);
+// 		free(line);
+// 	}
+//  }
