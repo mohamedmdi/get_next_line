@@ -21,9 +21,10 @@
 
 int     get_next_line(int fd, char **line);
 char	*ft_strdup(const char *src);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *str, int ch);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlen(const char *str);
+void	ft_strdel(char **as);
 
 #endif

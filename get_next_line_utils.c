@@ -29,6 +29,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	dst[i] = '\0';
 	return (ls);
 }
+
 size_t	ft_strlen(const char *str)
 {
 	size_t i;
@@ -50,23 +51,13 @@ char	*ft_strdup(const char *src)
 	return (stri);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*txt;
 	char	*temp;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
-	if (!s1 || !s2)
-		return (0);
-	while (s1[i])
-		i++;
-	while (s2[j])
-		j++;
-	txt = (char *)malloc(sizeof(*txt) * (i + j + 1));
-	if (!txt)
+	if (!s1 || !s2 ||
+	!(txt = (char *)malloc(sizeof(*txt) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
 		return (0);
 	temp = txt;
 	while (*s1)
@@ -92,4 +83,3 @@ char	*ft_strchr(const char *str, int ch)
 	}
 	return (0);
 }
-
